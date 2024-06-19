@@ -1,4 +1,3 @@
-use core::panic;
 use std::u8;
 
 use crate::gates::and;
@@ -37,8 +36,10 @@ pub fn add_bytes(left: Byte, right: Byte) -> Result<Byte, &'static str> {
     let mut carry = false;
     let mut byte = Byte::default();
 
-    for i in 0..Byte::MAX {
+    for i in (0..Byte::MAX).rev() {
         let result = add_bits(left.0[i].clone(), right.0[i].clone(), carry);
+
+        dbg!(i, left.0[i], right.0[i], carry, result);
 
         carry = result.1;
         byte.0[i] = result.0;
@@ -67,12 +68,28 @@ mod tests {
         let mut left = Byte::default();
         let mut right = Byte::default();
 
-        left.0[7] = true;
-        right.0[7] = true;
+        left.0[0] = true;
+        right.0[0] = true;
 
         let result = add_bytes(left, right);
 
         assert_eq!(result.is_err(), true);
+    }
+
+    #[test]
+    fn can_add_5_plus_14() {
+        let five = Byte([false, false, false, false, false, true, false, true]);
+        let fourteen = Byte([false, false, false, false, true, true, true, false]);
+
+        let result = add_bytes(five, fourteen);
+
+        dbg!(&result);
+
+        assert!(result.is_ok());
+        assert_eq!(
+            result.unwrap(),
+            Byte([false, false, false, true, false, false, true, true])
+        )
     }
 
     #[test]

@@ -5,8 +5,8 @@ pub mod gates;
 pub mod hardware;
 pub mod memory;
 
-#[derive(Debug, Default)]
-pub struct Byte([bool; 8]);
+#[derive(Debug, Default, PartialEq, Clone, Copy)]
+pub struct Byte([bool; Byte::MAX]);
 
 impl Byte {
     pub const MAX: usize = 8;
