@@ -5,33 +5,6 @@ use crate::gates::or;
 use crate::gates::xor;
 use crate::Byte;
 
-#[derive(Debug, PartialEq)]
-struct My8BitDigit(bool, bool, bool, bool, bool, bool, bool, bool);
-
-impl My8BitDigit {
-    pub fn from_digit(value: u8) -> My8BitDigit {
-        My8BitDigit(
-            value & 0b1000_0000 > 0,
-            value & 0b0100_0000 > 0,
-            value & 0b0010_0000 > 0,
-            value & 0b0001_0000 > 0,
-            value & 0b0000_1000 > 0,
-            value & 0b0000_0100 > 0,
-            value & 0b0000_0010 > 0,
-            value & 0b0000_0001 > 0,
-        )
-    }
-}
-
-#[test]
-fn maybe() {
-    let val = My8BitDigit::from_digit(15);
-    assert_eq!(
-        val,
-        My8BitDigit(false, false, false, false, true, true, true, true)
-    );
-}
-
 pub fn add_bytes(left: Byte, right: Byte) -> Result<Byte, &'static str> {
     let mut carry = false;
     let mut byte = Byte::default();
